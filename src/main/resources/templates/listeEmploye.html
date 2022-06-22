@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"layout:decorator="template">
+<link rel="stylesheet" type="text/css"href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css" />
+<head>
+<meta charset="utf-8">
+<title>Liste des Rattrapges</title>
+</head>
+<body>
+<div layout:fragment="Mycontent">
+<div class="container mt-5">
+<div class="card" style="border-color: #ffc727;">
+<div class="card-header" style="background-color: #ffc727; color: #1A5276; font-weight: bold;">
+Liste des Rattrapages
+</div>
+<div class="card-body">
+
+ <br>
+<table class="table table-striped">
+<tr style=" background-color: white; color: #1A5276; border-color: #ffc727; ">
+<th>ID</th><th>Nom rattrapage</th><th>module</th><th>Date</th><th>Motif</th> 
+</tr>
+<tr th:each="e:${employes}">
+<td th:text="${e.id_rat}"></td>
+<td th:text="${e.nomClasse}"></td>
+<td th:text="${e.module}"></td>
+<td th:text="${e.date}"></td>
+<td   th:if= "${!#strings.isEmpty(e.motif)}"   th:text="${e.motif.nomM}"></td>  
+<td   th:if= "${#strings.isEmpty(e.motif)}"     th:text="${'Pas de Motif'}"></td>    	
+<td sec:authorize="hasRole('ADMIN')"><a class="btn btn-danger" onclick="return confirm('Etes-vous sûr ?')"th:href="@{supprimerEmploye(id=${e.id_rat},page=${currentPage},size=${size})}">Supprimer</a></td>
+<td sec:authorize="hasRole('ADMIN')"><a class="btn btn-success"th:href="@{modifierEmploye(id=${e.id_rat})}" style="background-color: #1A5276 ; color: #ffffff">Modifier</a></td>
+</tr>
+</table>
+<ul class="nav nav-pills">
+<li th:each="page,status:${pages}" >
+<a  th:class="${status.index==currentPage?'btn btn-warning':'btn' }"th:href="@{ListeEmployes(page=${status.index}, size=${size} ) }"th:text="${status.index }"></a>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>
